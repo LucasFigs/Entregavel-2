@@ -1,7 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import * as javaAlgo from "./algorithms/java";
+// Import only JavaScript algorithms since Java is not available in the deployment environment
 import * as jsAlgo from "./algorithms/javascript";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -20,15 +20,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // Prime Number Handler
 function handlePrime(req: Request, res: Response) {
   try {
-    const { number } = req.body;
+    const { number, implementation } = req.body;
     
     if (isNaN(number) || number <= 0) {
       return res.status(400).json({ error: "Invalid input: Please provide a positive integer" });
     }
     
-    // Use Java implementation
-    const result = javaAlgo.isPrime(number);
-    res.json({ result });
+    // Always use JavaScript implementation
+    const startTime = performance.now();
+    const result = jsAlgo.isPrime(number);
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    
+    res.json({ 
+      result, 
+      executionTime,
+      // If Java was requested, inform client we're using JS instead
+      note: implementation === 'java' ? 'Java implementation not available in deployment environment. Using JavaScript instead.' : undefined
+    });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
   }
@@ -37,15 +46,23 @@ function handlePrime(req: Request, res: Response) {
 // Summation Handler
 function handleSummation(req: Request, res: Response) {
   try {
-    const { numbers } = req.body;
+    const { numbers, implementation } = req.body;
     
     if (!Array.isArray(numbers) || numbers.some(n => isNaN(n))) {
       return res.status(400).json({ error: "Invalid input: Please provide an array of numbers" });
     }
     
-    // Use Java implementation
-    const result = javaAlgo.summation(numbers);
-    res.json({ result });
+    // Always use JavaScript implementation
+    const startTime = performance.now();
+    const result = jsAlgo.summation(numbers);
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    
+    res.json({ 
+      result, 
+      executionTime,
+      note: implementation === 'java' ? 'Java implementation not available in deployment environment. Using JavaScript instead.' : undefined
+    });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
   }
@@ -54,15 +71,23 @@ function handleSummation(req: Request, res: Response) {
 // Fibonacci Handler
 function handleFibonacci(req: Request, res: Response) {
   try {
-    const { n } = req.body;
+    const { n, implementation } = req.body;
     
     if (isNaN(n) || n <= 0) {
       return res.status(400).json({ error: "Invalid input: Please provide a positive integer" });
     }
     
-    // Use Java implementation
-    const result = javaAlgo.fibonacci(n);
-    res.json({ result });
+    // Always use JavaScript implementation
+    const startTime = performance.now();
+    const result = jsAlgo.fibonacci(n);
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    
+    res.json({ 
+      result, 
+      executionTime,
+      note: implementation === 'java' ? 'Java implementation not available in deployment environment. Using JavaScript instead.' : undefined
+    });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
   }
@@ -71,15 +96,23 @@ function handleFibonacci(req: Request, res: Response) {
 // GCD Handler
 function handleGCD(req: Request, res: Response) {
   try {
-    const { a, b } = req.body;
+    const { a, b, implementation } = req.body;
     
     if (isNaN(a) || isNaN(b) || a <= 0 || b <= 0) {
       return res.status(400).json({ error: "Invalid input: Please provide two positive integers" });
     }
     
-    // Use Java implementation
-    const result = javaAlgo.gcd(a, b);
-    res.json({ result });
+    // Always use JavaScript implementation
+    const startTime = performance.now();
+    const result = jsAlgo.gcd(a, b);
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    
+    res.json({ 
+      result, 
+      executionTime,
+      note: implementation === 'java' ? 'Java implementation not available in deployment environment. Using JavaScript instead.' : undefined
+    });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
   }
@@ -88,15 +121,23 @@ function handleGCD(req: Request, res: Response) {
 // QuickSort Handler
 function handleQuickSort(req: Request, res: Response) {
   try {
-    const { numbers } = req.body;
+    const { numbers, implementation } = req.body;
     
     if (!Array.isArray(numbers) || numbers.some(n => isNaN(n))) {
       return res.status(400).json({ error: "Invalid input: Please provide an array of numbers" });
     }
     
-    // Use Java implementation
-    const result = javaAlgo.quickSort(numbers);
-    res.json({ result });
+    // Always use JavaScript implementation
+    const startTime = performance.now();
+    const result = jsAlgo.quickSort([...numbers]); // Clone to avoid mutation
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    
+    res.json({ 
+      result, 
+      executionTime,
+      note: implementation === 'java' ? 'Java implementation not available in deployment environment. Using JavaScript instead.' : undefined
+    });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
   }
@@ -105,15 +146,23 @@ function handleQuickSort(req: Request, res: Response) {
 // Count Handler
 function handleCount(req: Request, res: Response) {
   try {
-    const { data, n } = req.body;
+    const { data, n, implementation } = req.body;
     
     if (!Array.isArray(data) || data.some(d => isNaN(d)) || isNaN(n)) {
       return res.status(400).json({ error: "Invalid input: Please provide an array of integers and an upper limit" });
     }
     
-    // Use Java implementation
-    const result = javaAlgo.countInRange(data, n);
-    res.json({ result });
+    // Always use JavaScript implementation
+    const startTime = performance.now();
+    const result = jsAlgo.countInRange(data, n);
+    const endTime = performance.now();
+    const executionTime = endTime - startTime;
+    
+    res.json({ 
+      result, 
+      executionTime,
+      note: implementation === 'java' ? 'Java implementation not available in deployment environment. Using JavaScript instead.' : undefined
+    });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "Unknown error" });
   }
